@@ -1,8 +1,9 @@
 import { Add, DeleteOutline, EditOutlined } from '@mui/icons-material';
-import { Card, IconButton, Stack, Typography } from '@mui/material';
+import { Card, IconButton, Stack, Typography, alpha, useTheme } from '@mui/material';
 import { Handle, type NodeProps, Position } from '@xyflow/react';
 import type { StatusNoAprendizado } from '@shared/types/noAprendizado';
 import type { NoGraphNodeData } from '@/hooks/nos/layoutNoGraph';
+import { statusNoOptions } from '@/hooks/nos/noSchema';
 import { StatusSelect } from './StatusSelect';
 
 export interface NoGraphActions {
@@ -18,9 +19,19 @@ type NoGraphNodeProps = NodeProps & {
 
 export function NoGraphNode({ data }: NoGraphNodeProps) {
   const { no, actions } = data;
+  const theme = useTheme();
+  const statusOption = statusNoOptions.find((o) => o.value === no.status) ?? statusNoOptions[0];
+
+  const statusCardSx =
+    statusOption.color === 'default'
+      ? {}
+      : {
+          bgcolor: alpha(theme.palette[statusOption.color].main, 0.1),
+          borderColor: alpha(theme.palette[statusOption.color].main, 0.6),
+        };
 
   return (
-    <Card variant="outlined" sx={{ width: 260, p: 1.25, cursor: 'grab' }}>
+    <Card variant="outlined" sx={{ width: 260, p: 1.25, cursor: 'grab', ...statusCardSx }}>
       <Handle type="target" position={Position.Top} id="target" style={{ visibility: 'hidden' }} />
       <Handle
         type="source"
@@ -30,15 +41,17 @@ export function NoGraphNode({ data }: NoGraphNodeProps) {
       />
 
       <Stack spacing={0.75}>
-        <Stack className="nodrag" direction="row" sx={{ cursor: 'default' }}>
-          <StatusSelect
-            status={no.status}
-            onChange={(status) => actions.onStatusChange(no.id, status)}
-          />
+        <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={0.5}>
+          <Typography variant="body2" fontWeight={600} noWrap title={no.titulo} sx={{ flex: 1 }}>
+            {no.titulo}
+          </Typography>
+          <Stack className="nodrag" sx={{ cursor: 'default' }}>
+            <StatusSelect
+              status={no.status}
+              onChange={(status) => actions.onStatusChange(no.id, status)}
+            />
+          </Stack>
         </Stack>
-        <Typography variant="body2" fontWeight={600} noWrap title={no.titulo}>
-          {no.titulo}
-        </Typography>
         {no.anotacoes ? (
           <Typography
             variant="caption"

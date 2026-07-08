@@ -1,5 +1,12 @@
 import { CheckCircle, PendingActions, RadioButtonUnchecked } from '@mui/icons-material';
-import { MenuItem, Select, type SelectChangeEvent, Stack, Typography } from '@mui/material';
+import {
+  MenuItem,
+  Select,
+  type SelectChangeEvent,
+  Stack,
+  Tooltip,
+  Typography,
+} from '@mui/material';
 import type { StatusNoAprendizado } from '@shared/types/noAprendizado';
 import { statusNoOptions } from '@/hooks/nos/noSchema';
 
@@ -35,12 +42,9 @@ export function StatusSelect({ status, onChange }: StatusSelectProps) {
         const option = statusNoOptions.find((o) => o.value === value) ?? statusNoOptions[0];
         const Icon = STATUS_ICONS[option.value];
         return (
-          <Stack direction="row" alignItems="center" spacing={0.5}>
+          <Tooltip title={option.label}>
             <Icon fontSize="small" color={iconColor(option.color)} />
-            <Typography variant="caption" fontWeight={600} color="text.secondary">
-              {option.label}
-            </Typography>
-          </Stack>
+          </Tooltip>
         );
       }}
       sx={{ '& .MuiSelect-select': { py: 0, display: 'flex', alignItems: 'center' } }}
