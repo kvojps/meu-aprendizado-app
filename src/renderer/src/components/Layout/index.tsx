@@ -22,7 +22,7 @@ import {
 } from '@mui/material';
 import { ReactNode, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import logo32x32 from '@/assets/logo-32x32.svg';
+import logo from '@/assets/logo.png';
 import { useThemeMode } from '@/hooks/useThemeMode';
 import { ROUTES } from '../../routes';
 
@@ -78,14 +78,7 @@ export function Layout({ children }: LayoutProps) {
             }}
             onClick={() => go(ROUTES.APRENDIZADOS)}
           >
-            <Box
-              component="img"
-              src={logo32x32}
-              alt=""
-              width={24}
-              height={24}
-              sx={{ borderRadius: '3px' }}
-            />
+            <Box component="img" src={logo} alt="" width={28} height={28} />
             <Typography variant="h6" sx={{ fontWeight: 700 }}>
               {APP_NAME}
             </Typography>
